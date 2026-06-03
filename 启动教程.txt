@@ -2,7 +2,7 @@ Arco 语音转文字工具 - 一键启动教程
 
 以后要运行网页，只需要打开“终端”，复制粘贴这一条命令：
 
-cd /Users/daphnischloe/Desktop/arco && bash scripts/run.sh
+cd /Users/arco && bash scripts/run.sh
 
 看到终端里出现类似下面内容，就说明启动成功：
 
@@ -50,7 +50,7 @@ lsof -ti tcp:8000 | xargs kill -9
 
 然后重新运行：
 
-cd /Users/daphnischloe/Desktop/arco && bash scripts/run.sh
+cd /Users/arco && bash scripts/run.sh
 
 
 确认模型是否下载完成
@@ -58,15 +58,15 @@ cd /Users/daphnischloe/Desktop/arco && bash scripts/run.sh
 
 现在模型默认保存在项目文件夹内：
 
-/Users/daphnischloe/Desktop/arco/checkpoints/huggingface/hub
+/Users/arco/checkpoints/huggingface/hub
 
 检查 large-v3：
 
-find /Users/daphnischloe/Desktop/arco/checkpoints/huggingface/hub/models--mlx-community--whisper-large-v3-mlx -name '*.incomplete' -print
+find /Users/arco/checkpoints/huggingface/hub/models--mlx-community--whisper-large-v3-mlx -name '*.incomplete' -print
 
 检查 Qwen3-ASR 0.6B：
 
-find /Users/daphnischloe/Desktop/arco/checkpoints/huggingface/hub/models--Qwen--Qwen3-ASR-0.6B -name '*.incomplete' -print
+find /Users/arco/checkpoints/huggingface/hub/models--Qwen--Qwen3-ASR-0.6B -name '*.incomplete' -print
 
 如果没有任何输出，说明对应模型已经下载完成。
 
@@ -77,10 +77,7 @@ Qwen3-ASR 0.6B：约 1.8G
 faster-whisper base：约 141M
 checkpoints 总大小：约 4.8G
 
-如果项目内还没有模型，但系统缓存里已经下载过，可以复制旧模型过来，避免重新下载：
-
-cp -a /Users/daphnischloe/.cache/huggingface/hub/models--mlx-community--whisper-large-v3-mlx /Users/daphnischloe/Desktop/arco/checkpoints/huggingface/hub/
-cp -a /Users/daphnischloe/.cache/huggingface/hub/models--Systran--faster-whisper-base /Users/daphnischloe/Desktop/arco/checkpoints/huggingface/hub/
+如果项目内还没有模型，但系统缓存里已经下载过，可以复制旧模型过来，避免重新下载
 
 以后更换 medium、turbo、small 等模型时，如果项目内缓存里没有对应模型，第一次会下载；下载完成后会复用项目内缓存。
 
@@ -131,7 +128,7 @@ cd /Users/你的用户名/Desktop/arco && bash scripts/run.sh
 
 如果新模型也来自 Hugging Face，默认会继续下载到：
 
-/Users/daphnischloe/Desktop/arco/checkpoints/huggingface/hub
+/Users/arco/checkpoints/huggingface/hub
 
 
 环境说明
@@ -160,6 +157,6 @@ mlx-qwen3-asr
 
 如果你明确想让同一个 Wi-Fi 下的其他设备访问，可以这样启动：
 
-cd /Users/daphnischloe/Desktop/arco && ARCO_HOST=0.0.0.0 bash scripts/run.sh
+cd /Users/arco && ARCO_HOST=0.0.0.0 bash scripts/run.sh
 
 普通使用不建议这样做，因为上传的是你的本地音频文件。
