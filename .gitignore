@@ -1,0 +1,15 @@
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+tmp/
+uploads/
+*.mp3
+*.wav
+*.m4a
+*.flac
+.DS_Store
+*.egg-info/
+dist/
+build/
+checkpoints/

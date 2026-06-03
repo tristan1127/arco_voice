@@ -1,0 +1,7 @@
+fastapi==0.111.0
+uvicorn[standard]==0.29.0
+faster-whisper==1.0.3
+mlx-qwen3-asr==0.1.0
+python-multipart==0.0.9
+sse-starlette==2.1.0
+torch==2.3.0

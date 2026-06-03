@@ -1,0 +1,165 @@
+Arco 语音转文字工具 - 一键启动教程
+
+以后要运行网页，只需要打开“终端”，复制粘贴这一条命令：
+
+cd /Users/daphnischloe/Desktop/arco && bash scripts/run.sh
+
+看到终端里出现类似下面内容，就说明启动成功：
+
+✓ Starting server at http://127.0.0.1:8000
+Open http://localhost:8000/ui in your browser
+
+然后在浏览器打开：
+
+http://localhost:8000/ui
+
+
+推荐设置
+---
+
+中文录音优先：
+
+模型：Qwen3-ASR 0.6B 或 large-v3
+语言：中文
+任务：transcribe
+输出：txt
+
+想更快一点可以打开：
+
+http://localhost:8000/ui?model=medium
+
+想直接打开千问 3 ASR 0.6B：
+
+http://localhost:8000/ui?model=qwen3-asr-0.6b
+
+
+停止服务
+---
+
+回到正在运行服务的终端窗口，按：
+
+Control + C
+
+
+如果提示 Address already in use
+---
+
+说明 8000 端口被旧服务占用了。先运行：
+
+lsof -ti tcp:8000 | xargs kill -9
+
+然后重新运行：
+
+cd /Users/daphnischloe/Desktop/arco && bash scripts/run.sh
+
+
+确认模型是否下载完成
+---
+
+现在模型默认保存在项目文件夹内：
+
+/Users/daphnischloe/Desktop/arco/checkpoints/huggingface/hub
+
+检查 large-v3：
+
+find /Users/daphnischloe/Desktop/arco/checkpoints/huggingface/hub/models--mlx-community--whisper-large-v3-mlx -name '*.incomplete' -print
+
+检查 Qwen3-ASR 0.6B：
+
+find /Users/daphnischloe/Desktop/arco/checkpoints/huggingface/hub/models--Qwen--Qwen3-ASR-0.6B -name '*.incomplete' -print
+
+如果没有任何输出，说明对应模型已经下载完成。
+
+当前项目内已有三个模型缓存：
+
+large-v3 MLX：约 2.9G
+Qwen3-ASR 0.6B：约 1.8G
+faster-whisper base：约 141M
+checkpoints 总大小：约 4.8G
+
+如果项目内还没有模型，但系统缓存里已经下载过，可以复制旧模型过来，避免重新下载：
+
+cp -a /Users/daphnischloe/.cache/huggingface/hub/models--mlx-community--whisper-large-v3-mlx /Users/daphnischloe/Desktop/arco/checkpoints/huggingface/hub/
+cp -a /Users/daphnischloe/.cache/huggingface/hub/models--Systran--faster-whisper-base /Users/daphnischloe/Desktop/arco/checkpoints/huggingface/hub/
+
+以后更换 medium、turbo、small 等模型时，如果项目内缓存里没有对应模型，第一次会下载；下载完成后会复用项目内缓存。
+
+
+上传到 GitHub
+---
+
+可以把这个项目作为“本地部署语音转文字网页端”上传到 GitHub。
+
+建议上传代码，不上传模型文件：
+
+frontend/
+backend/
+scripts/
+README.md
+启动教程.txt
+.gitignore
+
+不要上传：
+
+checkpoints/
+.venv/
+音频文件
+
+这些已经在 .gitignore 里忽略。别人 clone 之后运行：
+
+cd /Users/你的用户名/Desktop/arco && bash scripts/run.sh
+
+首次选择模型时会自动下载到自己的 checkpoints/huggingface/hub。
+
+
+以后新增模型要改哪里
+---
+
+一般需要改 4 个地方：
+
+1. frontend/index.html
+在 model 下拉框里加一个 option。
+
+2. backend/main.py
+把新模型值加入 ALLOWED_MODELS。
+
+3. backend/transcriber.py
+新增模型加载和 transcribe 分支。
+
+4. backend/requirements.txt
+如果新模型需要新的 Python 包，在这里加依赖。
+
+如果新模型也来自 Hugging Face，默认会继续下载到：
+
+/Users/daphnischloe/Desktop/arco/checkpoints/huggingface/hub
+
+
+环境说明
+---
+
+默认使用 conda 环境：
+
+get-note
+
+这个环境已经确认可用：
+
+Python 3.11.15
+fastapi
+uvicorn
+faster-whisper
+sse-starlette
+torch
+mlx-whisper
+mlx-qwen3-asr
+
+
+安全说明
+---
+
+启动脚本默认只监听本机地址 127.0.0.1，不会主动开放给局域网其他设备。
+
+如果你明确想让同一个 Wi-Fi 下的其他设备访问，可以这样启动：
+
+cd /Users/daphnischloe/Desktop/arco && ARCO_HOST=0.0.0.0 bash scripts/run.sh
+
+普通使用不建议这样做，因为上传的是你的本地音频文件。
